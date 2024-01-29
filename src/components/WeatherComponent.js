@@ -1,73 +1,72 @@
-// src/WeatherComponent.js
-import React, { useState } from 'react'
-import { getWeather, generateDynamicResponse, getRecordTemp } from '../api'
-import Card from './Card'
+import React, { useState } from "react";
+import { getWeather, generateDynamicResponse, getRecordTemp } from "../api";
+import Card from "./Card";
 
 const WeatherComponent = () => {
-  const [city, setCity] = useState('')
-  const [weatherData, setWeatherData] = useState(null)
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState('')
-  const [backgroundImage, setBackgroundImage] = useState('/forecast1.avif')
-  const [activities, setActivities] = useState([])
+  const [city, setCity] = useState("");
+  const [weatherData, setWeatherData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [backgroundImage, setBackgroundImage] = useState("/forecast1.avif");
+  const [activities, setActivities] = useState([]);
 
-  const [highestTemperature, setHighestTemperature] = useState([])
-  const [lowestTemperature, setLowestTemperature] = useState([])
+  const [highestTemperature, setHighestTemperature] = useState([]);
+  const [lowestTemperature, setLowestTemperature] = useState([]);
 
   const fetchWeatherData = async () => {
     try {
-      setError('')
-      setIsLoading(true)
-      const data = await getWeather(city)
+      setError("");
+      setIsLoading(true);
+      const data = await getWeather(city);
 
       if (data) {
-
         // make sure that the city is really exist
-        const { highestTemp, lowestTemp } = await getRecordTemp(city, data.temperature)
+        const { highestTemp, lowestTemp } = await getRecordTemp(
+          city,
+          data.temperature
+        );
         if (highestTemp) {
-          //console.log("highestTemp in weather component", highestTemp)
-          setHighestTemperature(highestTemp)
+          setHighestTemperature(highestTemp);
         } // set the highest temperature state with the value from the database
-        if (lowestTemp !== null ) {
+        if (lowestTemp !== null) {
           //console.log("lowestTemp in weather component", lowestTemp)
-          setLowestTemperature(lowestTemp)
+          setLowestTemperature(lowestTemp);
         } // set the lowest temperature state with the value from the database
 
-        setWeatherData(data)
+        setWeatherData(data);
         const response = await generateDynamicResponse(
           city,
           data.weatherCondition,
           data.temperature,
           data.humidity
-        )
-        setIsLoading(false)
+        );
+        setIsLoading(false);
         if (response) {
-          //console.log("respons!e", response) 
-          const activitiesArray = response.split('\n').filter((i) => !!i)
-          setActivities(activitiesArray)
+          //console.log("respons!e", response)
+          const activitiesArray = response.split("\n").filter((i) => !!i);
+          setActivities(activitiesArray);
         }
         if (data.temperature < 10) {
-          setBackgroundImage('/cold3.jpg')
+          setBackgroundImage("/cold3.jpg");
         } else if (data.temperature >= 11 && data.temperature <= 21) {
-          setBackgroundImage('/fresh.avif')
+          setBackgroundImage("/fresh.avif");
         } else {
-          setBackgroundImage('/hot.jpg')
+          setBackgroundImage("/hot.jpg");
         }
       } else {
         // Set a timer to re-enable (in case the input is wrong) the search button after 5 seconds
-        setError('I cannot find your place. Please try again!')
+        setError("I cannot find your place. Please try again!");
         setTimeout(() => {
-          setIsLoading(false)
-          setError('')
-        }, 3500)
+          setIsLoading(false);
+          setError("");
+        }, 3500);
       }
     } catch (error) {
       setError(
-        'Error fetching weather data. Please check your inputs and try again.'
-      )
-      
+        "Error fetching weather data. Please check your inputs and try again."
+      );
     }
-  }
+  };
 
   return (
     <div className="container app-wrapper">
@@ -77,7 +76,7 @@ const WeatherComponent = () => {
       ></div>
       <div className="right">
         <h1>Weather App</h1>
-        <p style={{ marginBottom: '16px' }}>
+        <p style={{ marginBottom: "16px" }}>
           Type in a city to search for the weather:
         </p>
         <form>
@@ -92,21 +91,21 @@ const WeatherComponent = () => {
           </label>
 
           <button type="button" onClick={fetchWeatherData} disabled={isLoading}>
-            {isLoading ? 'Searching...' : ' Get Weather ⛅️ '}
+            {isLoading ? "Searching..." : " Get Weather ⛅️ "}
           </button>
         </form>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
+        {error && <p style={{ color: "red" }}>{error}</p>}
 
         {weatherData && (
           <div className="weather-info">
-            <h2 style={{ textAlign: 'center' }}>Weather Information:</h2>
-            <p style={{ textAlign: 'center' }}>
+            <h2 style={{ textAlign: "center" }}>Weather Information:</h2>
+            <p style={{ textAlign: "center" }}>
               Weather: {weatherData.weatherCondition}
             </p>
-            <p style={{ textAlign: 'center' }}>
+            <p style={{ textAlign: "center" }}>
               Temperature: {weatherData.temperature}°C
             </p>
-            <p style={{ textAlign: 'center' }}>
+            <p style={{ textAlign: "center" }}>
               Humidity: {weatherData.humidity}%
             </p>
             <p>Highest (Among the searches): {highestTemperature}°C</p>
@@ -130,7 +129,7 @@ const WeatherComponent = () => {
         )}
         {activities.length > 0 ? (
           <div className="dynamic-response">
-            <h2 style={{ textAlign: 'center' }}>Recommended activities:</h2>
+            <h2 style={{ textAlign: "center" }}>Recommended activities:</h2>
             <div className="card-list">
               {activities.map((i, idx) => (
                 <Card key={idx} content={i} />
@@ -140,7 +139,7 @@ const WeatherComponent = () => {
         ) : null}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default WeatherComponent
+export default WeatherComponent;
