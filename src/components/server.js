@@ -2,10 +2,9 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 app.use(cors()); // Use cors middleware to allow cross-origin requests
-const PORT = process.env.PORT || 5000;
-const mongoose = require("mongoose");
+const PORT = process.env.PORT_1 || 3002
+const mongoose = require("mongoose")
 const Weather = require("../models/weather");
-
 const config = require("../utils/config");
 
 app.use(express.json()); // Add this line to parse JSON bodies
@@ -25,7 +24,8 @@ app.get("/api/temperature/:city", async (request, response) => {
       lowestTemp: weather.lowestTemp,
     });
   } else {
-    response.status(404).json({ error: "City not found" });
+    //response.status(404).json({ error: "City not found" });
+    response.json(null);
   }
 });
 
@@ -81,6 +81,6 @@ app.put("/api/temperature/:city/", async (request, response) => {
   }
 });
 
-app.listen(3002, () => console.log(`Server running on port ${3002}`));
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 module.exports = app;
