@@ -2,11 +2,10 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 app.use(cors()); // Use cors middleware to allow cross-origin requests
-const PORT = process.env.PORT_1 || 3002
 const mongoose = require("mongoose")
 const Weather = require("../models/weather");
 const config = require("../utils/config");
-
+const PORT = config.PORT || 5000
 app.use(express.json()); // Add this line to parse JSON bodies
 
 mongoose.connect(config.MONGODB_URI, {

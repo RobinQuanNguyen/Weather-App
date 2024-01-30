@@ -1,6 +1,6 @@
-import { getWeather, generateDynamicResponse } from "../api.js";
-import axios from "axios";
-import MockAdapter from "axios-mock-adapter";
+import { getWeather, generateDynamicResponse } from "../api.js"
+import axios from "axios"
+import MockAdapter from "axios-mock-adapter"
 
 // Create a new instance of the MockAdapter with the axois instance
 const mock = new MockAdapter(axios);
