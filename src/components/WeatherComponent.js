@@ -29,7 +29,6 @@ const WeatherComponent = () => {
           setHighestTemperature(highestTemp);
         } // set the highest temperature state with the value from the database
         if (lowestTemp !== null) {
-          //console.log("lowestTemp in weather component", lowestTemp)
           setLowestTemperature(lowestTemp);
         } // set the lowest temperature state with the value from the database
 
@@ -42,7 +41,6 @@ const WeatherComponent = () => {
         );
         setIsLoading(false);
         if (response) {
-          //console.log("respons!e", response)
           const activitiesArray = response.split("\n").filter((i) => !!i);
           setActivities(activitiesArray);
         }
@@ -108,8 +106,12 @@ const WeatherComponent = () => {
             <p style={{ textAlign: "center" }}>
               Humidity: {weatherData.humidity}%
             </p>
-            <p>Highest (Among the searches): {highestTemperature}°C</p>
-            <p>Lowest (Among the searches): {lowestTemperature}°C</p>
+            <p style={{ textAlign: "center" }}>
+              Highest (Among the searches): {highestTemperature}°C
+            </p>
+            <p style={{ textAlign: "center" }}>
+              Lowest (Among the searches): {lowestTemperature}°C
+            </p>
 
             {weatherData.icon && (
               <div>
